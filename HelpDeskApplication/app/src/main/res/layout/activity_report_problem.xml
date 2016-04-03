@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.rominirani.helpdesk.ReportProblemActivity">
+
+    <TextView
+        android:id="@+id/tvBeaconNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Beacon Name: "
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+    <Button
+        android:id="@+id/btnGetBeaconDetails"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvBeaconNameLabel"
+        android:drawablePadding="7dp"
+        android:text="Get Asset Details" />
+
+    <TextView
+        android:id="@+id/txtAssetId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnGetBeaconDetails"
+        android:text="Asset Id:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/txtAssetName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtAssetId"
+        android:text="Asset Name:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/txtIssueType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtAssetName"
+        android:text="Issue Type"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Spinner
+        android:id="@+id/spinnerIssueType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtIssueType"
+        android:entries="@array/issuetype" />
+
+
+
+    <EditText
+        android:id="@+id/edtIssueDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerIssueType"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:maxLines="10"
+        android:ems="10"
+        android:hint="Enter Issue Details"
+        android:maxLength="200" />
+    <EditText
+        android:id="@+id/edtReportedBy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edtIssueDetails"
+        android:inputType="text"
+        android:ems="10"
+        android:hint="Your Name"
+        android:maxLength="50" />
+
+    <Button
+        android:id="@+id/btnReportIssue"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edtReportedBy"
+        android:drawablePadding="7dp"
+        android:text="Report Issue" />
+
+
+</RelativeLayout>

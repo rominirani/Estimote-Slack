@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">HelpDeskApplication</string>
+    <string-array name="issuetype">
+        <item>Select Issue Type</item>
+        <item>No Power</item>
+        <item>Out of Paper</item>
+        <item>Paper Jam</item>
+        <item>Other Error</item>
+    </string-array>
+</resources>
