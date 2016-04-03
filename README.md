@@ -6,7 +6,7 @@ This is a Help Desk application that uses Estimote Beacons to make the task of r
 There are two applications in this project:
 
 1. Android Application : This application detects the estimote beacon. Each Estimote Beacon is configured with a Hardware Asset, for e.g. a Printer. So, if there is an issue with the printer, the user pulls out the application which detects that the Estimote Beacon is present and it pops up an Issue Reporting screen in the Android application. The issue is then filled out and sent to the Server.
-2. The Server application is a Google App Engine application that receives the issue reported by the Android application. The issue is saved locally in the datastore and a Slack Notification is raised in the #general Slack Channel for that team. 
+2. The Server application (**helpdesk**) is a Google App Engine application that receives the issue reported by the Android application. The issue is saved locally in the datastore and a Slack Notification is raised in the #general Slack Channel for that team. 
 
 # Hardware
 You will need Estimote Beacons, atleast one for this application
