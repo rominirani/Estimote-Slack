@@ -1,7 +1,8 @@
 # Estimote-Slack
-Estimote-Slack Integration
 
 This is a Help Desk application that uses Estimote Beacons to make the task of reporting issues easier. The issues are directly reported into the Slack Channel, where the team can get immediately notified.
+
+Check out the **EstimoteSlackIntegration.pdf** document for Application Flow and screenshots
 
 There are two applications in this project:
 
