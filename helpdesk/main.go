@@ -13,9 +13,10 @@ import (
 	"time"
 )
 
-const (
-	incoming_webhook_url string = "YOUR_SLACKCHANNEL_INCOMING_WEBHOOK_URL"
-)
+type WebhookURL struct {
+  PropName string
+  PropValue string
+}
 
 type Asset struct {
 	BeaconId   string
@@ -56,6 +57,9 @@ func init() {
 	http.HandleFunc("/listissues", issuespagehandler)
 	http.HandleFunc("/addAsset", addAsset)
 	http.HandleFunc("/raiseIssue", raiseIssue)
+  http.HandleFunc("/addSlackTeamWebhook",addSlackTeamWebhook)
+  http.HandleFunc("/SlackTeamWebhook",getSlackTeamWebhook)
+  http.HandleFunc("/clearData",clearData)
 }
 
 //This handler is for the home page. It shows the list of assets
@@ -71,6 +75,28 @@ func homepagehandler(w http.ResponseWriter, r *http.Request) {
 	if err = assetsListTemplate.Execute(w, results); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
+//Clear datastore
+func clearData(w http.ResponseWriter, r *http.Request) {
+   c := appengine.NewContext(r)
+   q1 := datastore.NewQuery("Asset")
+  var results1 []Asset
+  keys1,err := q1.GetAll(c,&results1)
+  if err != nil {
+               http.Error(w, err.Error(), http.StatusInternalServerError)
+               return
+  }
+  datastore.DeleteMulti(c,keys1)
+
+  q2 := datastore.NewQuery("Issue")
+  var results2 []Issue
+  keys2,err := q2.GetAll(c,&results2)
+  if err != nil {
+               http.Error(w, err.Error(), http.StatusInternalServerError)
+               return
+  }
+  datastore.DeleteMulti(c,keys2)
+
 }
 
 //Show list of Issues
@@ -118,21 +144,87 @@ func assetshandler(w http.ResponseWriter, r *http.Request) {
 
 //API - List of Issues
 func issueshandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	q := datastore.NewQuery("Issue").Filter("Status=", "ACTIVE")
-	var results []Issue
-	_, err := q.GetAll(c, &results)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+  c := appengine.NewContext(r)
+      q := datastore.NewQuery("Issue").Filter("Status=","ACTIVE")
+    var results []Issue
+    _,err := q.GetAll(c,&results)
+    if err != nil {
+                  http.Error(w, err.Error(), http.StatusInternalServerError)
+                  return
+          }
 
-	b, e := json.Marshal(results)
-	if e != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	fmt.Fprint(w, string(b))
+    b,e := json.Marshal(results)
+    if e != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+                  return
+    }
+    fmt.Fprint(w,string(b))
+}
+
+func webhookURLKey(c context.Context, url string) *datastore.Key {
+    return datastore.NewKey(c, "WebhookURL", "webhookurlkey", 0, nil)
+}
+
+//Add Slack Team Webhook url
+func addSlackTeamWebhook(w http.ResponseWriter, r *http.Request) {
+  webhookurl := r.FormValue("webhookurl")
+  c := appengine.NewContext(r)
+  wurl := WebhookURL {
+     PropName  : "webhookurl",
+     PropValue : webhookurl,
+  }
+
+key := webhookURLKey(c,webhookurl)
+  _, err := datastore.Put(c, key, &wurl)
+  if err != nil {
+          http.Error(w, err.Error(), http.StatusInternalServerError)
+          return
+  }
+
+resp := APIResponse{
+  ErrorCode : "200",
+  ErrorMsg  : "",
+}
+b,e := json.Marshal(&resp);
+if e != nil {}
+fmt.Fprint(w,string(b))
+
+}
+
+func getWebhook(c context.Context) string {
+  var wurl WebhookURL
+  q := datastore.NewQuery("WebhookURL")
+
+    var results []WebhookURL
+    keys,err := q.GetAll(c,&results)
+
+    err = datastore.Get(c, keys[0], &wurl)
+    if err != nil {
+
+                  return ""
+          }
+
+    return wurl.PropValue
+
+}
+
+//API - Slack Team URL
+func getSlackTeamWebhook(w http.ResponseWriter, r *http.Request) {
+
+  var wurl WebhookURL
+  c := appengine.NewContext(r)
+  q := datastore.NewQuery("WebhookURL")
+
+    var results []WebhookURL
+    keys,err := q.GetAll(c,&results)
+
+    err = datastore.Get(c, keys[0], &wurl)
+    if err != nil {
+                  http.Error(w, err.Error(), http.StatusInternalServerError)
+                  return
+          }
+
+    fmt.Fprint(w,wurl.PropValue)
 }
 
 //Creates a new Asset Key
