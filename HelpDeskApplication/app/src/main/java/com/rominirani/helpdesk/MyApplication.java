@@ -26,7 +26,7 @@ public class MyApplication extends Application {
     }
 
     public static String doBeaconSearch(String beaconName) {
-        String url = "http://YOUR_APP/assets?BeaconName="
+        String url = "http://helpdeskslack.appspot.com/assets?BeaconName="
                 + URLEncoder.encode(beaconName);
 
         OkHttpClient client = new OkHttpClient();
@@ -44,7 +44,7 @@ public class MyApplication extends Application {
     }
 
     public static String doRaiseIssue(String assetId, String assetName, String issueType, String issueDetails, String issueRaisedBy) {
-        String url = "http://YOUR_APP/raiseIssue?"
+        String url = "http://helpdeskslack.appspot.com/raiseIssue?"
                 + "AssetId=" + URLEncoder.encode(assetId)
                 + "&AssetName=" + URLEncoder.encode(assetName)
                 + "&IssueType=" + URLEncoder.encode(issueType)
